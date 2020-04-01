@@ -26,6 +26,7 @@ public class ItemManager : IItemManager
         };
 
         _itemRepository.Add(ItemEntity);
+        _itemRepository.SaveChanges();
 
         return ItemEntity;
     }

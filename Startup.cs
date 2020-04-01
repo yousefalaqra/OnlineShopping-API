@@ -29,7 +29,9 @@ namespace api
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddControllers();
 
-            services.AddScoped(typeof(Repository<>), typeof(IRepository<>));
+            // services.AddSingleton(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped(typeof(IItemManager), typeof(ItemManager));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
