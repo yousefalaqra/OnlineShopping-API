@@ -1,7 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("api")]
+[Route("api/[controller]")]
 public class ItemsController : ControllerBase
 {
 
@@ -14,25 +17,46 @@ public class ItemsController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetItems(){
+    public IEnumerable<ItemEntity> GetItems(){
         var result = _itemManager.GetItems();
 
-        return Ok(result);
+        return result;
     }
 
-    // [HttpGet($"{id}")]
-    //   public IActionResult GetItems(){
-    //     var result = _itemManager.GetItem(id);
+    [HttpGet("{id}")]
+      public async Task<ItemEntity> GetItem(Guid id){
+        var result = await _itemManager.GetItem(id);
 
-    //     return Ok(result);
-    // }
+        return result;
+    }
 
 
     [HttpPost]
-    public IActionResult PostItem(ItemModel model)
+    public ItemEntity PostItem(ItemModel model)
     {
         var item = _itemManager.AddItem(model);
 
-        return Ok(item);
+        return item;
     }
+
+
+    
+    [HttpPut("{id}")]
+    public async Task<ItemEntity> PutItem(Guid id ,ItemModel model)
+    {
+        var item = await _itemManager.UpdateItem(id ,model);
+
+        return item;
+    }
+
+
+    [HttpDelete("{id}")]
+    public string DeleteItem(Guid id)
+    {
+        _itemManager.DeleteItem(id);
+
+        return "Deleted";
+    }
+    
+
 } 
